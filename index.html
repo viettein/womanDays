@@ -119,7 +119,7 @@
 
   // === Ảnh nền phía sau trái tim lớn ===
   const loader = new THREE.TextureLoader();
-  loader.load("z7134470524947_78224130d63720d4101aa9ae702d1a80.jpg", (texture) => {
+  loader.load("vioa2.jpg", (texture) => {
     const geometry = new THREE.PlaneGeometry(10, 6);
     const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 0.35 });
     const plane = new THREE.Mesh(geometry, material);
@@ -128,7 +128,7 @@
   });
 
   // === Ảnh ở giữa trái tim ===
-  loader.load("z7134470524947_78224130d63720d4101aa9ae702d1a80.jpg", (texture) => {
+  loader.load("vioa1.jpg", (texture) => {
     const geometry = new THREE.PlaneGeometry(1.2, 1.2);
     const material = new THREE.MeshBasicMaterial({ 
       map: texture, 
