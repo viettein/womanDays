@@ -12,14 +12,32 @@
     box-sizing: border-box;
   }
 
-  body {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background: radial-gradient(circle at bottom, #0a0015 0%, #000 50%, #1a0033 100%);
-    font-family: 'Segoe UI', sans-serif;
-    color: #fff;
-  }
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at bottom, #0a0015 0%, #000 50%, #1a0033 100%);
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+  position: relative; /* thêm để dùng ::before */
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("bg.jpg"); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.4; 
+  z-index: -1;  
+  filter: blur(2px) brightness(0.8); 
+}
+
 
   canvas {
     display: block;
@@ -109,7 +127,7 @@
 </audio>
 
 <script>
-  // Khởi tạo Three.js scene
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -117,7 +135,7 @@
   renderer.setClearColor(0xffb3d9, 0);
   document.body.appendChild(renderer.domElement);
 
-  // Hàm tạo hình trái tim
+
   function getHeartPositions(scale = 1) {
     const points = [];
     for (let i = 0; i <= 100; i++) {
@@ -129,7 +147,6 @@
     return points;
   }
 
-  // Tạo nhóm trái tim nhỏ cho trái tim lớn
   const heartGroup = new THREE.Group();
   scene.add(heartGroup);
 
@@ -137,12 +154,11 @@
   const heartCount = 150;
   const heartPositions = getHeartPositions(1);
 
-  // Tạo các trái tim nhỏ sắp xếp theo hình trái tim lớn
   for (let i = 0; i < heartCount; i++) {
     const idx = Math.floor((i / heartCount) * heartPositions.length);
     const targetPos = heartPositions[idx];
 
-    // Tạo geometry cho mỗi trái tim nhỏ
+  
     const smallHeartShape = new THREE.Shape();
     const scale = 0.08;
     
@@ -175,14 +191,13 @@
     smallHearts.push(mesh);
   }
 
-  // Tạo nhóm trái tim bay xung quanh
   const flyingHeartsGroup = new THREE.Group();
   scene.add(flyingHeartsGroup);
 
   const flyingHearts = [];
   const flyingHeartCount = 30;
 
-  // Tạo các trái tim bay
+
   for (let i = 0; i < flyingHeartCount; i++) {
     const smallHeartShape = new THREE.Shape();
     const scale = 0.05 + Math.random() * 0.05;
@@ -226,7 +241,7 @@
     flyingHearts.push(mesh);
   }
 
-  // Thêm ánh sáng
+
   const light = new THREE.PointLight(0xff1a75, 1.5, 100);
   light.position.set(0, 0, 5);
   scene.add(light);
@@ -236,10 +251,10 @@
 
   camera.position.z = 3;
 
-  // Quản lý âm thanh
+ 
   const audio = document.getElementById('background-music');
   const audioControl = document.getElementById('audio-control');
-  audio.volume = 0.5; // Đặt âm lượng mặc định
+  audio.volume = 0.5; 
 
   audioControl.addEventListener('click', () => {
     if (audio.paused) {
@@ -251,12 +266,12 @@
     }
   });
 
-  // Xử lý autoplay (đối phó với chính sách trình duyệt)
+ 
   audio.play().catch(() => {
     audioControl.textContent = '🔊 Bật nhạc';
   });
 
-  // Animation loop
+  
   let time = 0;
   function animate() {
     requestAnimationFrame(animate);
@@ -292,7 +307,7 @@
 
   animate();
 
-  // Xử lý resize
+
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
