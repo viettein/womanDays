@@ -127,6 +127,25 @@
     scene.add(plane);
   });
 
+  // === Ảnh ở giữa trái tim ===
+  loader.load("z7134470524947_78224130d63720d4101aa9ae702d1a80.jpg", (texture) => {
+    const geometry = new THREE.PlaneGeometry(1.2, 1.2);
+    const material = new THREE.MeshBasicMaterial({ 
+      map: texture, 
+      transparent: true, 
+      opacity: 0.95 
+    });
+    const centerImage = new THREE.Mesh(geometry, material);
+    centerImage.position.z = 0.5; // phía trước trái tim
+    
+    // Thêm hiệu ứng xoay nhẹ
+    centerImage.rotation.z = 0.1;
+    scene.add(centerImage);
+    
+    // Lưu để có thể animate sau
+    window.centerImage = centerImage;
+  });
+
   // Hàm tạo hình trái tim
   function getHeartPositions(scale = 1) {
     const points = [];
@@ -283,6 +302,16 @@
       heart.rotation.z += 0.01;
       heart.rotation.x = Math.sin(time + heart.orbitAngle) * 0.2;
     });
+
+    // Animate ảnh ở giữa
+    if (window.centerImage) {
+      window.centerImage.rotation.z += 0.0008;
+      window.centerImage.scale.set(
+        1 + Math.sin(time * 2) * 0.05,
+        1 + Math.sin(time * 2) * 0.05,
+        1
+      );
+    }
 
     heartGroup.rotation.z += 0.0005;
     renderer.render(scene, camera);
